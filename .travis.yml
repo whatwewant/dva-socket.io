@@ -1,0 +1,26 @@
+# @Author: eason
+# @Date:   2017-07-19T17:50:07+08:00
+# @Email:  uniquecolesmith@gmail.com
+# @Last modified by:   eason
+# @Last modified time: 2017-07-20T15:31:25+08:00
+# @License: MIT
+# @Copyright: Eason(uniquecolesmith@gmail.com)
+
+language: node_js
+node_js:
+  - 8
+  - 7
+  - 6
+
+after_success: npm run build
+
+jobs:
+  include:
+    - stage: npm release
+      node_js: 7
+      script: echo "Deploying to npm"
+      deploy:
+        provider: npm
+        email: tobewhatwewant@gmail.com
+        api_key: $NPM_API_KEY
+        on: deploy-npm-release

@@ -1,0 +1,41 @@
+# @Author: eason
+# @Date:   2017-07-19T18:02:01+08:00
+# @Email:  uniquecolesmith@gmail.com
+# @Last modified by:   eason
+# @Last modified time: 2017-07-20T10:21:25+08:00
+# @License: MIT
+# @Copyright: Eason(uniquecolesmith@gmail.com)
+
+{
+  "parser": "babel-eslint",
+  "extends": "airbnb",
+  "rules": {
+    "generator-star-spacing": [0],
+    "consistent-return": [0],
+    "react/forbid-prop-types": [0],
+    "react/jsx-filename-extension": [1, { "extensions": [".js"] }],
+    "global-require": [1],
+    "import/prefer-default-export": [0],
+    "react/jsx-no-bind": [0],
+    "react/prop-types": [0],
+    "react/prefer-stateless-function": [0],
+    "no-else-return": [0],
+    "no-restricted-syntax": [0],
+    "import/no-extraneous-dependencies": [0],
+    "no-use-before-define": [0],
+    "jsx-a11y/no-static-element-interactions": [0],
+    "jsx-a11y/href-no-hash": [0],
+    "no-nested-ternary": [0],
+    "arrow-body-style": [0],
+    "import/extensions": [0],
+    "no-bitwise": [0],
+    "no-cond-assign": [0],
+    "import/no-unresolved": [0],
+    "require-yield": [1]
+  },
+  "parserOptions": {
+    "ecmaFeatures": {
+      "experimentalObjectRestSpread": true
+    }
+  }
+}
