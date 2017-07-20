@@ -1,6 +1,6 @@
 {
   "name": "dva-socket.io",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "socket.io(listener/emitters) plugin for dva",
   "main": "lib/index.js",
   "jsnext:main": "src/index.js",

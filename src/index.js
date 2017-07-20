@@ -3,11 +3,12 @@
 * @Date:   2017-07-19T18:32:34+08:00
 * @Email:  uniquecolesmith@gmail.com
 * @Last modified by:   eason
-* @Last modified time: 2017-07-20T14:22:10+08:00
+* @Last modified time: 2017-07-20T17:48:16+08:00
 * @License: MIT
 * @Copyright: Eason(uniquecolesmith@gmail.com)
 */
+import createSocketPlugin from './dva-plugin';
 
-export { createListeners, createEmiters } from './middleware';
+export default createSocketPlugin;
 
-export default from './dva-plugin';
+export { createMiddleware, createListeners, createEmiters } from './middleware';
