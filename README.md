@@ -3,7 +3,7 @@
 @Date:   2017-07-19T17:50:07+08:00
 @Email:  uniquecolesmith@gmail.com
 @Last modified by:   eason
-@Last modified time: 2017-07-20T14:36:50+08:00
+@Last modified time: 2017-07-23T18:51:19+08:00
 @License: MIT
 @Copyright: Eason(uniquecolesmith@gmail.com)
 -->
@@ -64,18 +64,38 @@ app.use(createSocket({
 }));
 ```
 
+```javascript
+// With Async Service
+import dva from 'dva';
+import createSocket from 'dva-socket.io';
+
+const app = dva();
+
+app.use(createSocket({
+  asyncs: [
+    {
+      evaluate: (action, dispatch) => true,
+      request: async (action, dispatch) => {
+        const data = await = fetch(action.payload.url);
+        dispatch(data);
+      },
+    },
+  ],
+}));
+```
+
 ## Api
 
 ### `createSocket(url, options, rules)`
 - @param `url: String`:  socket.io url
 - @param `options: Object`: socket.io options
 - @param `rules: Object`: listeners(on), emitters(emit)
-	-  `on: Object | Array`
+	- `on: Object | Array`
     - `key: String | number` as a listen event name
     - `value: Function` as a listen handle function
       - @params `data: Server Push Value`
       - @params `dispatch: Redux dispatch Function`
-  -  `emit: Object | Array`
+  - `emit: Object | Array`
     - `key: String` as a listen event name
     - `value: Object` as an Object { evaluate, data }
       - `evaluate: Function` as a validate function, only if evaluate return `true`, it will emit a `key` event with `data`
@@ -83,4 +103,11 @@ app.use(createSocket({
         - @params `dispatch: Redux dispatch Function`
       - `data: Function | Value` as a emit data provider
         - @params `action: Server Push Value`
+  - `asyncs: Array`
+    - `evaluate: Function` as a validate function, only if evaluate return `true`, it will call `request`
+      - @params `action: Redux dispatched Action`
+      - @params `dispatch: Redux dispatch Function`
+    - `request: Async Function` as async request service
+      - @params `action: Redux dispatched Action`
+      - @params `dispatch: Redux dispatch Function`
 - @return `DVA PLUGIN`
