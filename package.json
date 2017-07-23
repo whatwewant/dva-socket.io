@@ -34,7 +34,7 @@
     "babel-preset-es2015": "^6.24.1",
     "babel-register": "^6.24.1",
     "chai": "^4.1.0",
-    "chai-spies": "^0.7.1",
+    "chai-spies": "git://github.com/chaijs/chai-spies.git#master",
     "coveralls": "^2.13.1",
     "cross-env": "^5.0.1",
     "eslint": "^4.2.0",

@@ -3,14 +3,14 @@
 * @Date:   2017-07-20T14:16:57+08:00
 * @Email:  uniquecolesmith@gmail.com
 * @Last modified by:   eason
-* @Last modified time: 2017-07-20T14:23:48+08:00
+* @Last modified time: 2017-07-23T18:43:14+08:00
 * @License: MIT
 * @Copyright: Eason(uniquecolesmith@gmail.com)
 */
 import invariant from 'invariant';
 import io from 'socket.io-client';
 
-export default function createMiddleware(url, options, rules) {
+export function createMiddleware(url, options, rules) {
   const socket = io(url, options);
 
   return ({ dispatch }) => {
@@ -19,10 +19,17 @@ export default function createMiddleware(url, options, rules) {
 
     return next => (action) => {
       const emitters = createEmiters(dispatch, action, rules.emit);
+      const asyncs = createAsyncs(dispatch, action, rules.asyncs);
 
       emitters.forEach(([event, evaluate, data]) => {
         if (evaluate()) {
           socket.emit(event, data());
+        }
+      });
+
+      asyncs.forEach(([evaluate, request]) => {
+        if (evaluate()) {
+          request();
         }
       });
 
@@ -76,4 +83,16 @@ export function createEmiters(dispatch, action, emitters = {}) {
       () => (typeof data === 'function' ? data(action) : data),
     ];
   });
+}
+
+export function createAsyncs(dispatch, action, asyncs = []) {
+  invariant(
+    Array.isArray(asyncs),
+    'createAsyncs: asyncs should be an array!',
+  );
+
+  return asyncs.map(({ evaluate = () => false, request = () => {} }) => [
+    () => evaluate(action, dispatch),
+    () => request(action, dispatch),
+  ]);
 }
