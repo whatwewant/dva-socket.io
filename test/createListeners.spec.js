@@ -2,8 +2,8 @@
 * @Author: eason
 * @Date:   2017-07-19T17:50:07+08:00
 * @Email:  uniquecolesmith@gmail.com
-* @Last modified by:   eason
-* @Last modified time: 2017-07-20T15:08:05+08:00
+ * @Last modified by:   zero
+ * @Last modified time: 2017-07-28T11:31:38+08:00
 * @License: MIT
 * @Copyright: Eason(uniquecolesmith@gmail.com)
 */
@@ -50,7 +50,7 @@ describe('create listeners', () => {
   });
 
   it('listeners result of function is in expected.', () => {
-    const listeners = createListeners(dispatch, rules.listeners);
+    const listeners = createListeners({ dispatch }, rules.listeners);
 
     listeners.forEach(([event, listener]) => expect(listener(action)).to.equal(dispatch(action)));
   });
@@ -73,13 +73,13 @@ describe('create listeners', () => {
   });
 
   it('listeners(array) result of function is in expected.', () => {
-    const listeners = createListeners(dispatch, rules.listenersArray);
+    const listeners = createListeners({ dispatch }, rules.listenersArray);
 
     listeners.forEach(([event, listener]) => expect(listener(action)).to.equal(dispatch(action)));
   });
 
   it('listeners(array) default listener', () => {
-    const listeners = createListeners(dispatch, ['message']);
+    const listeners = createListeners({ dispatch }, ['message']);
 
     listeners.forEach(([event, listener]) => expect(listener(action)).to.equal(dispatch(action)));
   });

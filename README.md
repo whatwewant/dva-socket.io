@@ -51,13 +51,13 @@ app.use(createSocket({
   // when server push an server-message event,
   //  it will dispatch an action use server data,
   on: {
-    'server-message': (data, dispatch) => dispatch(data),
+    'server-message': (data, dispatch, getState) => dispatch(data),
   },
   emit: [
     // when you dispatch an action with type === 'send-message',
     //  it will emit a client-message event with data('client send a message')
     'client-message': {
-      evaluate: (action) => action.type === 'send-message',
+      evaluate: (action, dispatch, getState) => action.type === 'send-message',
       data: (action) => 'client send a message',
     },
   ],
@@ -74,8 +74,8 @@ const app = dva();
 app.use(createSocket({
   asyncs: [
     {
-      evaluate: (action, dispatch) => true,
-      request: async (action, dispatch) => {
+      evaluate: (action, dispatch, getState) => true,
+      request: async (action, dispatch, getState) => {
         const data = await = fetch(action.payload.url);
         dispatch(data);
       },
