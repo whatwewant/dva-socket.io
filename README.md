@@ -24,7 +24,7 @@ import createSocket from 'dva-socket.io';
 
 const app = dva();
 
-app.use(createSocket({
+app.use(createSocket('http://127.0.0.1:8080', null, {
   // when server push an server-message event,
   //  it will dispatch an action use server data,
   on: ['server-message'],
@@ -47,20 +47,20 @@ import createSocket from 'dva-socket.io';
 
 const app = dva();
 
-app.use(createSocket({
+app.use(createSocket('http://127.0.0.1:8080', null, {
   // when server push an server-message event,
   //  it will dispatch an action use server data,
   on: {
     'server-message': (data, dispatch, getState) => dispatch(data),
   },
-  emit: [
+  emit: {
     // when you dispatch an action with type === 'send-message',
     //  it will emit a client-message event with data('client send a message')
     'client-message': {
       evaluate: (action, dispatch, getState) => action.type === 'send-message',
       data: (action) => 'client send a message',
     },
-  ],
+  },
 }));
 ```
 
@@ -71,7 +71,7 @@ import createSocket from 'dva-socket.io';
 
 const app = dva();
 
-app.use(createSocket({
+app.use(createSocket('http://127.0.0.1:8080', null, {
   asyncs: [
     {
       evaluate: (action, dispatch, getState) => true,
