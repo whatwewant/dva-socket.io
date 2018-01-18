@@ -12,6 +12,7 @@
 [![Build Status](https://travis-ci.org/whatwewant/dva-socket.io.svg?branch=master)](https://travis-ci.org/whatwewant/dva-socket.io)
 [![Coverage Status](https://coveralls.io/repos/github/whatwewant/dva-socket.io/badge.svg)](https://coveralls.io/github/whatwewant/dva-socket.io)
 [![NPM downloads](https://img.shields.io/npm/v/dva-socket.io.svgd)](https://npmjs.org/package/dva-socket.io)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fwhatwewant%2Fdva-socket.io.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fwhatwewant%2Fdva-socket.io?ref=badge_shield)
 
 A socket.io plugin for dva [dva](https://github.com/dvajs/dva) or **Redux**.
 
@@ -111,3 +112,7 @@ app.use(createSocket('http://127.0.0.1:8080', null, {
       - @params `action: Redux dispatched Action`
       - @params `dispatch: Redux dispatch Function`
 - @return `DVA PLUGIN`
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fwhatwewant%2Fdva-socket.io.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fwhatwewant%2Fdva-socket.io?ref=badge_large)
