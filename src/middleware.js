@@ -10,8 +10,8 @@
 import invariant from 'invariant';
 import io from 'socket.io-client';
 
-export function createMiddleware(url, options, rules) {
-  const socket = io(url, options);
+export function createMiddleware(url, options, rules, ref_io) {
+  const socket = ref_io ? ref_io(url, options) : io(url, options);
 
   return ({ dispatch, getState }) => {
     const listeners = createListeners({ dispatch, getState }, rules.on);
