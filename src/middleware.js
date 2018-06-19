@@ -14,12 +14,12 @@ export function createMiddleware(url, options, rules, ref_io) {
   const socket = ref_io ? ref_io(url, options) : io(url, options);
 
   return ({ dispatch, getState }) => {
-    const listeners = createListeners({ dispatch, getState }, rules.on);
+    const listeners = createListeners({ dispatch, getState, socket }, rules.on);
     listeners.forEach(([event, listener]) => socket.on(event, listener));
 
     return next => (action) => {
-      const emitters = createEmiters({ dispatch, getState }, action, rules.emit);
-      const asyncs = createAsyncs({ dispatch, getState }, action, rules.asyncs);
+      const emitters = createEmiters({ dispatch, getState, socket }, action, rules.emit);
+      const asyncs = createAsyncs({ dispatch, getState, socket }, action, rules.asyncs);
 
       emitters.forEach(([event, evaluate, data]) => {
         if (evaluate()) {
@@ -38,7 +38,7 @@ export function createMiddleware(url, options, rules, ref_io) {
   };
 }
 
-export function createListeners({ dispatch, getState }, listeners = {}) {
+export function createListeners({ dispatch, getState, socket }, listeners = {}) {
   invariant(
     ['[object Object]', '[object Array]'].includes(Object.prototype.toString.call(listeners)),
     'createListeners: listeners should be an object or an array!',
@@ -58,10 +58,10 @@ export function createListeners({ dispatch, getState }, listeners = {}) {
   }
 
   return Object.keys(listeners)
-    .map(event => [event, data => listeners[event](data, dispatch, getState)]);
+    .map(event => [event, data => listeners[event](data, dispatch, getState, socket)]);
 }
 
-export function createEmiters({ dispatch, getState }, action, emitters = {}) {
+export function createEmiters({ dispatch, getState, socket }, action, emitters = {}) {
   invariant(
     ['[object Object]', '[object Array]'].includes(Object.prototype.toString.call(emitters)),
     'createListeners: listeners should be an object or an array!',
@@ -70,7 +70,7 @@ export function createEmiters({ dispatch, getState }, action, emitters = {}) {
   if (Array.isArray(emitters)) {
     return emitters.map(([event, evaluate, data = ac => ac]) => [
       event,
-      () => evaluate(action, dispatch),
+      () => evaluate(action, dispatch, getState, socket),
       () => (typeof data === 'function' ? data(action) : data),
     ]);
   }
@@ -79,20 +79,20 @@ export function createEmiters({ dispatch, getState }, action, emitters = {}) {
     const { evaluate, data = ac => ac } = emitters[event];
     return [
       event,
-      () => evaluate(action, dispatch, getState),
+      () => evaluate(action, dispatch, getState, socket),
       () => (typeof data === 'function' ? data(action) : data),
     ];
   });
 }
 
-export function createAsyncs({ dispatch, getState }, action, asyncs = []) {
+export function createAsyncs({ dispatch, getState, socket }, action, asyncs = []) {
   invariant(
     Array.isArray(asyncs),
     'createAsyncs: asyncs should be an array!',
   );
 
   return asyncs.map(({ evaluate = () => false, request = () => {} }) => [
-    () => evaluate(action, dispatch, getState),
-    () => request(action, dispatch, getState),
+    () => evaluate(action, dispatch, getState, socket),
+    () => request(action, dispatch, getState, socket),
   ]);
 }
