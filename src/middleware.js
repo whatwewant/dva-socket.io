@@ -21,9 +21,9 @@ export function createMiddleware(url, options, rules, ref_io) {
       const emitters = createEmiters({ dispatch, getState, socket }, action, rules.emit);
       const asyncs = createAsyncs({ dispatch, getState, socket }, action, rules.asyncs);
 
-      emitters.forEach(([event, evaluate, data]) => {
+      emitters.forEach(([event, evaluate, data, callback]) => {
         if (evaluate()) {
-          socket.emit(event, data());
+          socket.emit(event, data(), callback);
         }
       });
 
@@ -68,10 +68,11 @@ export function createEmiters({ dispatch, getState, socket }, action, emitters =
   );
 
   if (Array.isArray(emitters)) {
-    return emitters.map(([event, evaluate, data = ac => ac]) => [
+    return emitters.map(([event, evaluate, data = ac => ac, callback]) => [
       event,
       () => evaluate(action, dispatch, getState, socket),
       () => (typeof data === 'function' ? data(action) : data),
+      () => callback(action, dispatch, getState, socket)
     ]);
   }
 
