@@ -80,7 +80,7 @@ export function createEmiters({ dispatch, getState, socket }, action, emitters =
   }
 
   return Object.keys(emitters).map((event) => {
-    const { evaluate, data = ac => ac } = emitters[event];
+    const { evaluate, data = ac => ac, callback } = emitters[event];
     return [
       event,
       () => evaluate(action, dispatch, getState, socket),
