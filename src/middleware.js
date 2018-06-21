@@ -72,7 +72,7 @@ export function createEmiters({ dispatch, getState, socket }, action, emitters =
       event,
       () => evaluate(action, dispatch, getState, socket),
       () => (typeof data === 'function' ? data(action) : data),
-      () => callback && callback(action, dispatch, getState, socket)
+      (data) => callback && callback(data, action, dispatch, getState, socket)
     ]);
   }
 
