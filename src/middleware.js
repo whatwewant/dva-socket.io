@@ -24,7 +24,6 @@ export function createMiddleware(url, options, rules, ref_io) {
       emitters.forEach(([event, evaluate, data, callback]) => {
         if (evaluate()) {
           socket.emit(event, data(), (data) => {
-            console.log('callback-'+event, data)
             callback && callback()
           });
         }
