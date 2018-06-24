@@ -16,10 +16,17 @@ export function createMiddleware(url, options, rules, ref_io) {
   return ({ dispatch, getState }) => {
     const listeners = createListeners({ dispatch, getState, socket }, rules.on);
     listeners.forEach(([event, listener]) => socket.on(event, listener));
+    let emitters;
+    let asyncs;
 
     return next => (action) => {
-      const emitters = createEmiters({ dispatch, getState, socket }, action, rules.emit);
-      const asyncs = createAsyncs({ dispatch, getState, socket }, action, rules.asyncs);
+      if (!emitters) {
+        emitters = createEmiters({ dispatch, getState, socket }, action, rules.emit);
+      }
+
+      if (!asyncs) {
+        asyncs = createAsyncs({ dispatch, getState, socket }, action, rules.asyncs);
+      }
 
       emitters.forEach(([event, evaluate, data, callback]) => {
         if (evaluate()) {
