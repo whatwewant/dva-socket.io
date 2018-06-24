@@ -9,8 +9,8 @@
 */
 import { createMiddleware } from './middleware';
 
-export default function createDvaSocket(url, options, rules) {
-  const middleware = createMiddleware(url, options, rules);
+export default function createDvaSocket(url, options, rules, ref_io) {
+  const middleware = createMiddleware(url, options, rules, ref_io);
 
   return {
     onAction: [middleware],
